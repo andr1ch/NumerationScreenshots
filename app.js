@@ -1,8 +1,8 @@
 const DEFAULTS = {
   startNumber: 1,
   baseFontSize: 100,
-  leftMargin: 58,
-  bottomMargin: 42,
+  leftMargin: 52,
+  bottomMargin: 44,
   referenceWidth: 1280,
   referenceHeight: 720,
   strokeWidth: 1,
