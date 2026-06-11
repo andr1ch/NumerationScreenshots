@@ -15,9 +15,9 @@
 }
 
 @font-face {
-  font-family: "Dela Gothic One Local";
+  font-family: "Dela Gothic One";
   src: url("./assets/DelaGothicOne-Regular.ttf") format("truetype");
-  font-display: swap;
+  font-display: block;
 }
 
 * {
@@ -290,9 +290,7 @@ input {
   }
 
   .controls-panel {
-    position: sticky;
-    top: 8px;
-    z-index: 3;
+    position: static;
   }
 }
 

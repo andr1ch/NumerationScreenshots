@@ -18,8 +18,10 @@ const DEFAULTS = {
   gradientBottom: "#67E8FF",
   strokeColor: "#000000",
   shadowColor: "#000000",
-  fontFamily: '"Dela Gothic One Local", "Arial Black", sans-serif',
+  fontFamily: '"Dela Gothic One", "Arial Black", sans-serif',
 };
+
+let fontLoadPromise = null;
 
 const state = {
   files: [],
@@ -59,8 +61,33 @@ function bindEvents() {
 }
 
 async function ensureFontReady() {
-  if (document.fonts?.ready) {
-    await document.fonts.ready;
+  if (!("fonts" in document)) {
+    return false;
+  }
+
+  if (!fontLoadPromise) {
+    fontLoadPromise = (async () => {
+      const face = new FontFace(
+        "Dela Gothic One",
+        'url("./assets/DelaGothicOne-Regular.ttf") format("truetype")'
+      );
+
+      const loadedFace = await face.load();
+      document.fonts.add(loadedFace);
+      await document.fonts.load('100px "Dela Gothic One"');
+      await document.fonts.ready;
+      return true;
+    })();
+  }
+
+  try {
+    const loaded = await fontLoadPromise;
+    setStatus('Font ready: "Dela Gothic One".');
+    return loaded;
+  } catch (error) {
+    console.warn("Failed to load Dela Gothic One, fallback font will be used.", error);
+    setStatus('Font load failed, browser fallback font is active.');
+    return false;
   }
 }
 
@@ -90,6 +117,7 @@ async function processFiles() {
     return;
   }
 
+  await ensureFontReady();
   revokeZipUrl();
   state.results = [];
   ui.downloadButton.disabled = true;
